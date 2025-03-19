@@ -1,0 +1,22 @@
+train_dir: "C:/Users/조성찬/OneDrive - UOS/바탕 화면/ICSV31-AI-Challenge-main/DRONE DATA/train"
+eval_dir: "C:/Users/조성찬/OneDrive - UOS/바탕 화면/ICSV31-AI-Challenge-main/DRONE DATA/eval"
+test_dir: "C:/Users/조성찬/OneDrive - UOS/바탕 화면/ICSV31-AI-Challenge-main/DRONE DATA/test"
+
+result_dir: ./results/baseline
+model_dir: ./model/baseline
+
+model_path: baseline.pth
+
+epochs: 10
+batch_size: 64
+lr: 1e-3
+
+gpu: 0
+n_workers: 4
+
+sr: 16000
+n_fft: 1024
+win_length: 1024
+hop_length: 512
+n_mels: 128
+power: 2.0

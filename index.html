@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICSV31-AI-Challenge (2nd KSNVE AI Challenge)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 15px;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        } 
+
+        header {
+            padding: 20px;
+            padding-bottom: 0px;
+            background: linear-gradient(120deg, #4a90e2, #9013fe);
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            border-bottom: 2px solid #fff;
+            text-align: center;
+        }
+
+        section {
+            margin: 20px auto;
+            max-width: 1000px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        p {
+            text-align: left;
+            line-height: 1.5; /* 줄 간격 조정 */
+            margin-bottom: 15px; /* 문단 간 공백 추가 */
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4a90e2;
+            color: white;
+        }
+
+        .highlight {
+            background-color: #f0f0f0;
+            padding: 0.5px 5px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .math {
+            font-family: 'Cambria Math', 'STIX Two Math', 'Latin Modern Math', serif;
+            background-color: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        footer {
+            padding: 15px;
+            background: linear-gradient(120deg, #4a90e2, #9013fe);
+            color: #fff;
+            font-size: 14px;
+            border-top: 2px solid #fff;
+            margin-top: 20px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+        }
+        #myImg {
+            max-width: 1000px;
+            max-height: 100%;
+        }
+        .content-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .content-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .content-text {
+            flex: 1;
+        }
+
+        .content-text a {
+            font-weight: bold;
+            font-size: 18px;
+            color: #4a90e2;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .content-text a:hover {
+            color: #9013fe;
+        }
+
+        .content-details {
+            font-size: 14px;
+            color: #666;
+        }
+        h4 {
+            font-size: 17px;
+        }
+    </style>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+    <header>
+       <img id="myImg" src="figures/AIClogo.png" width="40%" alt="ICSV31-AI-Challenge (2nd KSNVE AI Challenge)"> 
+    </header>
+
+    <section>
+        <h2>Update history</h2>
+        <p><strong>2025-02-05 23:00 (KST):</strong> Challenge Launch</p>
+    </section>
+
+    <section>
+        <h2>Overview</h2>
+        <p>The organizing committee of the <a href="https://icsv31.org/">ICSV31</a> conference hosts an AI Challenge focusing on diagnosing machine anomalies using acoustic signals.<br>
+        Participants will train AI models on drone sound signals and identify anomalies from a provided dataset. A grand prize of <strong>1,500 USD</strong> will be awarded to the winning team.</p>
+        <p>Participation is team-based, and <em>at least one team member must be a registered attendee of the <a href="https://icsv31.org/">ICSV31</a> conference</em> at the time of model submission. The conference will also hold a dedicated workshop session for participating teams.</p>
+    </section>
+
+    <section>
+        <h2>&#128227; Key dates</h2>
+        <table border="1" style="width: 80%; margin: auto;">
+            <tr>
+                <th>Event</th>
+                <th>Date</th>
+            </tr>
+            <tr>
+                <td>Challenge launch (distribution of task descriptions, train & eval datasets)</td>
+                <td>5 Feb. 2025</td>
+            </tr>
+            <tr>
+                <td>Distribution of test dataset</td>
+                <td>1 April 2025</td>
+            </tr>
+            <tr>
+                <td>Final submission (Anomaly score, trained model, technical report)</td>
+                <td>21 May 2025</td>
+            </tr>
+            <tr>
+                <td>Competition result announcement</td>
+                <td>31 May 2025</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>1. Introduction</h2>
+        <p><strong>ICSV31-AI-Challenge (2nd KSNVE AI Challenge)</strong> aims to diagnose the state of drones by detecting anomalous sounds caused by mechanical failures in propellers and motors in noisy environments. In particular, drone sounds that vary depending on operational conditions, such as flight directions, along with background noise, make this task highly challenging.</p>
+        <p>The ultimate goal of the competition is to develop anomaly detection models capable of identifying anomalies in drones using data collected under various conditions.</p>
+        <ul>
+            <li>Participants are required to train deep learning models detecting anomalous drone sounds in test data, through the model training using the training dataset.</li>
+            <li>Reflecting the real-world limitation of collecting a small amount of anomalous drone data, participants will tackle the challenge of training deep learning models exclusively on normal drone data. (<em>Self-Supervised Learning</em>)</li>
+            <li><span class="highlight">Train dataset</span> includes normal sounds from three types of quadcopter drones maneuvered in six flight directions. <span class="highlight">Eval dataset</span>, which includes normal and anomalous drone sounds, is also provided for the self-evaluation of developed models. The anomalous sounds were generated from faulty drones with motor or blade tip defects.</li>
+            <li><span class="highlight">Test dataset</span> will be released one month before the date of submission. <span class="highlight">Test dataset</span> includes data for final evaluation and introduces two new types of anomalies not provided in the <span class="highlight">Eval dataset</span>.</li>
+            <li>To simulate real-world conditions, all data were augmented with environmental noise recorded in four distinct places.</li>
+            <li>Participants must submit anomaly scores for both the <span class="highlight">Eval dataset</span> and <span class="highlight">Test dataset</span>. The organizing committee will calculate ROC-AUCs based on the submitted anomaly scores, and the weighted average of ROC-AUCs will be used to evaluate the final performance.</li>
+            <li>The use of external datasets for model training is allowed, as long as the datasets are released to the public before 2025. In this case, participants should declare which dataset was employed in the technical report.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>2. Dataset</h2>
+        <p>Dataset for ICSV31 AI Challenge: <a href="https://drive.google.com/file/d/1BK-dpXG68gTmwA68JbbDW10AlaVRMYJU/view?usp=sharing">download</a></p>
+        <p>This ICSV31 AI Challenge dataset is based on the <a href="https://arxiv.org/abs/2304.11708">drone noise data</a>, originally constructed by Wonjun Yi, Jung-Woo Choi, Jae-Woo Lee for the drone fault classification task.<br>
+        (W. Yi, J-W. Choi., J-W. Lee, "Sound-based drone fault classification using multi-task learning", Proceedings of the 29th International Congress on Sound and Vibration (ICSV 29), Prague, Czech Republic, July. 2023.)</p>
+        <p>The previous dataset was significantly modified for this specific challenge.</p>
+
+        <br><br>
+        <h3>Dataset construction</h3>
+        <p>The drones used in this study include the Holy Stone HS720 <strong>(Type A)</strong>, MJX Bugs 12 EIS <strong>(Type B)</strong>, and ZLRC SG906 Pro2 <strong>(Type C)</strong>.</p>
+        <img src="figures/drones.png" width="90%" alt="Three drone types used for the experiment.">
+        <p style="text-align: center;"><em>Figure 1: Three drone types used for the experiment.(a) Type A (Holy Stone HS720), (b) Type B (MJX Bugs 12 EIS), (c) Type C (ZLRC SG906 Pro2)</em></p>
+
+        <p>Drone sounds were recorded using a RØDE Wireless Go2 wireless microphone mounted on the top of the drone body. The sensitivity of the microphone was adjusted to prevent clipping even at high sound pressure levels. The recordings were conducted in an anechoic chamber to eliminate wall reflections.</p>
+        <img src="figures/microphones.png" width="80%" alt="Røde Wireless Go2 microphones">
+        <p style="text-align: center;"><em>Figure 2: (a) RøDE Wireless Go2 microphones (transmitter, receiver), (b) recording sounds of drone type B</em></p>
+
+        <p>The recorded drone sounds, originally sampled at 48 kHz, were downsampled to 16 kHz and segmented into 2-second segments.</p>
+        <ul>
+            <li>The drones were secured with two elastic ropes connected to the ceiling and floor, allowing free rotation and movement. A rotating ring was employed to minimize the impact of the ropes on the drone's motion.</li>
+            <li>The moving direction labels include six categories: forward, backward, right, left, clockwise, and counterclockwise.</li>
+            <li>Abnormal data were produced by incorporating defects to the drone's propeller or motor. The <strong>propeller defects</strong> were generated by cutting approximately 10% of a single propeller to generate abnormal vibrations, and <strong>motor defects</strong> were created by denting the motor cap using a vise to increase friction and hinder rotation.</li>
+        </ul>
+        <img src="figures/fault.png" alt="Faults" width="500">
+        <p style="text-align: center;"><em>Figure 3: Faults of drone type B. (a) propeller cut, (b) dented motor cap (red circle indicates dented part)</em></p>
+
+        <br><br>
+        <h3>Noise addition</h3>
+        <p>To simulate real-flight conditions, drone sounds were mixed with background noise at a signal-to-noise ratio (SNR) of -5 to 5 dB. The background noise consists of recordings from three distinct outdoor locations (ponds, hills, and gates), as well as <a href="https://zenodo.org/record/1227121">DEMAND Noise</a>, which includes noise from the park, town square, and traffic intersection environments.</p>
+
+        <img src="figures/backgrounds.png" alt="Background noise recording locations">
+        <p style="text-align: center;"><em>Figure 4: Three different spots on the university campus chosen for background noise recording: (a) pond, (b) hill, and (c) gate.</em></p>
+
+        <br><br>
+        <h3>Dataset category</h3>
+        <p>Data is provided in three categories: <span class="highlight">train</span> and <span class="highlight">eval</span> for development, and <span class="highlight">test</span> for competition submission.</p>
+        <blockquote>
+            The <span class="highlight">eval</span> and <span class="highlight">test</span> datasets must not be directly utilized as the training data.
+        </blockquote>
+        <ul>
+            <li>The <span class="highlight">train</span> dataset consists of data from normal drones without defects.</li>
+            <li>The <span class="highlight">eval</span> dataset is provided for assessing the performance of the developed model.</li>
+            <li>The <span class="highlight">test</span> dataset, along with the <span class="highlight">eval</span> dataset, is intended solely for competition submission. It should only be used to perform diagnosis of the trained model and submit the results.</li>
+            <li>The <span class="highlight">eval</span> dataset includes six types of defects: three propeller defects and three motor defects. In contrast, the <span class="highlight">test</span> dataset contains a total of eight defect types, incorporating one additional propeller defect and one additional motor defect not present in the <span class="highlight">eval</span> dataset.</li>
+        </ul>
+
+        <br><br>
+        <h3>Dataset composition</h3>
+        <h4>File Names</h4>
+        <p><strong>Train and Evaluation Data (5,400 train files, 1,080 eval files)</strong></p>
+        <p>The filenames for the <span class="highlight">train</span> dataset follow the format:</p>
+        <p><span class="highlight"><strong>[dataset]_[drone_type]_[moving_direction]_[anomaly_flag]_[data_index].wav</strong></span></p>
+        <p>where:</p>
+        <ul>
+            <li><span class="highlight">[dataset]</span> represents the dataset type (<span class="highlight">train</span> / <span class="highlight">eval</span> / <span class="highlight">test</span>).</li>
+            <li><span class="highlight">[drone_type]</span> denotes the drone type (<span class="highlight">A</span> / <span class="highlight">B</span> / <span class="highlight">C</span>).</li>
+            <li><span class="highlight">[moving_direction]</span> indicates the movement direction (<span class="highlight">Front</span> / <span class="highlight">Back</span> / <span class="highlight">Right</span> / <span class="highlight">Left</span> / <span class="highlight">Clockwise</span> / <span class="highlight">CounterClockwise</span>).</li>
+            <li><span class="highlight">[anomaly_flag]</span> specifies whether the data corresponds to a normal or anomalous drone (<span class="highlight">normal</span> / <span class="highlight">anomaly</span>).</li>
+            <li><span class="highlight">[data_index]</span> is a unique identifier for the data file.</li>
+        </ul>
+        
+        <p><strong>Test Data (Total 1,440 files)</strong></p>
+        <p>The filenames for the <span class="highlight">test</span> dataset follow the format:</p>
+        <p><span class="highlight"><strong>[dataset]_[drone_type]_[moving_direction]_[data_index].wav</strong></span></p>
+
+        <br><br>
+        <h3>Data specification</h3>
+        <h4>Train dataset</h4>
+        <img src="figures/train_dataset.png" width="80%" alt="Train dataset">
+        <li> The number of files per drone type is <strong>1,800</strong>.</li>
+        <li> The total number of files is <strong>5,400</strong>.</li>
+        
+        <h4>Evaluation dataset</h4>
+        <img src="figures/evaluation_dataset.png" width="80%" alt="Evaluation dataset">
+        <li> The number of files is <strong>60</strong> per drone type, moving direction, and fault type.</li>
+        <li> The total number of files is <strong>60 × 3 (drone types) × 6 (moving directions) = 1,080</strong>.</li>
+        <li> <strong>MF</strong>: Motor Cap Fault</li>
+        <li> <strong>PC</strong>: Propeller Cut</li>
+        
+        <h4>Test dataset</h4>
+        <img src="figures/test_dataset.png" width="80%" alt="Test dataset">
+        <li> The number of files is <strong>80</strong> per drone type, moving direction, and fault type.</li>
+        <li> The total number of files is <strong>80 × 3 (drone types) × 6 (moving directions) = 1,440</strong>.</li>
+    </section>
+
+    <section>
+        <h2>3. Evaluation metrics</h2>
+        <p>The evaluation metric for this challenge is <strong>ROC-AUC (Receiver Operating Characteristic - Area Under the Curve, AU-ROC)</strong>. ROC-AUC evaluates how well the distributions of normal and anomalous data are separated, independent of any specific decision boundary.</p>
+        <ul>
+            <li><strong>ROC-AUC</strong> represents the relationship between the False Positive Rate (FPR) and the True Positive Rate (TPR) in the form of a curve, and the area under this curve (AUC) is used as a numerical measure of model performance.</li>
+            <li>The ROC-AUC score ranges from <strong>0 to 1</strong>, where a value closer to 1 indicates that the model is highly effective at distinguishing between normal and anomalous data.</li>
+            <li>An AUC score of <strong>0.5</strong> suggests that the model performs no better than random guessing in separating normal and anomalous data.</li>
+        </ul>
+        <p><strong>ROC-AUC</strong> will be calculated by the <strong>organizing committee</strong> using the <span class="highlight">.csv</span> files submitted by participants. (Participants are not required to calculate or submit the ROC-AUC score themselves.)</p>
+        <img src="figures/auc.png" alt="ROC-AUC Curve">
+    </section>
+
+    <section>
+      <h2>4. Baseline systems</h2>
+    
+      <p>This challenge provides a baseline code.<br>
+      However, using or improving the baseline model is not mandatory for participation.<br>
+      Teams are free to develop their own models.</p>
+    
+      <p>The code consists of three files:</p>
+    
+      <ul>
+            <li><strong><span class="highlight">train.py</span></strong>: Trains a deep learning model using the train dataset.</li>
+            <li><strong><span class="highlight">eval.py</span></strong>: Evaluates the model performance using the validation dataset.</li>
+            <li><strong><span class="highlight">test.py</span></strong>: Extracts anomaly scores for the test dataset.</li>
+        </ul>
+
+      <br>
+      <h4>Model architecture</h4>
+    
+      <p>The baseline model utilizes <strong>WaveNet</strong> to perform a prediction task on spectrograms.<br>
+      WaveNet is primarily used as an audio generation model for anomalous sound detection. Due to its exponentially increasing dilation rate in each residual block, WaveNet has a wide receptive field.</p>
+    
+      <p>In the baseline model, WaveNet performs causal convolution to predict future spectral frames in the spectrogram.<br>
+      The model trained to minimize the prediction error of normal data tends to produce significantly higher prediction errors on anomalous data. This characteristic is leveraged for anomaly detection.</p>
+
+
+      <br>
+      <h4>Anomaly score</h4>
+    
+      <p>The <strong>anomaly score</strong> is computed using the mean squared error (MSE) between the target and predicted spectrograms.</p>
+    
+      <p>Let the input spectrogram be <span class="math">X = [x<sub>1</sub>, ..., x<sub>T</sub>] ∈ R<sup><em>F</em> × <em>T</em></sup></span>, where \(\mathit{F}\) and \(\mathit{T}\) represent the <strong>frequency</strong> and <strong>time</strong> dimensions of the spectrogram, respectively.<br>
+        The model takes input data of length equal to the receptive field, <span class="math">[x<sub>1</sub>, ..., x<sub>l</sub>]</span>, and predicts the next spectral frame <span class="math">x̂<sub>l+1</sub></span>. This is formulated as:<br>
+        <span class="math">x̂<sub>t+1</sub> = ψ<sub>φ</sub>(x<sub>t-l+1</sub>, ..., x<sub>t</sub>).</span></p>
+        
+        <p>Given the input data <span class="math">X = [x<sub>1</sub>, ..., x<sub>T</sub>]</span>, the model predicts <span class="math">X̂ = [x̂<sub>l+1</sub>, ..., x̂<sub>T+1</sub>]</span>.<br>
+        The <strong>anomaly score</strong> for each data point is computed as:</p>
+        <div style="text-align: center; font-family: 'Cambria Math', 'STIX Two Math', 'Latin Modern Math', serif !important; ">$$
+        \text{Score} = \frac{1}{T - l} \sum_{t=l+1}^{T} |x_t - \hat{x}_t|^2,
+        $$</div>
+        <p>where the mean squared error (MSE) measures the deviation between the actual and predicted spectrogram frames.</p>
+
+       <br><br>
+      <h4>Performance of baseline model</h4>
+    
+      <p>The <strong>baseline model</strong> was trained for <strong>100 epochs</strong> with a <strong>learning rate of 1e-3</strong> and a <strong>batch size of 64</strong>.</p>
+    
+      <p>The anomaly detection performance of the baseline model on the evaluation dataset is as follows:</p>
+    
+      <table border="1" style="width: 50%; margin: auto;">
+        <tr>
+          <th>Drone</th>
+          <th>A</th>
+          <th>B</th>
+          <th>C</th>
+        </tr>
+        <tr>
+          <td>AUC (%)</td>
+          <td>63.71</td>
+          <td>54.05</td>
+          <td>61.77</td>
+        </tr>
+      </table>
+    </section>
+    
+    <section>
+      <h2>5. Submission</h2>
+    
+      <p>Please submit your files to <a href="https://docs.google.com/forms/d/e/1FAIpQLSdEnCw_p9yT6ONhb3zgaesTu2ZxtcYCIuEksVaZzMCmhUVoCw/viewform">Submission link</a></p>
+    
+      <img src="figures/Task%20overview.png" alt="overview" width="500"/>
+    
+      <p>Participants must submit <strong>four files</strong> for challenge participation:</p>
+    
+      <ol>
+        <li><strong>Evaluation dataset performance</strong> (<span class="highlight">eval_score.csv</span>)</li>
+        <li><strong>Test dataset performance</strong> (<span class="highlight">test_score.csv</span>)</li>
+        <li><strong>Reproducible training and evaluation code</strong> (<span class="highlight">.zip</span>)</li>
+        <li><strong>Technical report</strong> (<span class="highlight">.pdf</span>)</li>
+      </ol>
+     <br>
+      <p>The <span class="highlight">eval.py</span> and <span class="highlight">test.py</span> files generate and save the <strong>anomaly scores</strong> for the evaluation and test datasets as <span class="highlight">eval_score.csv</span> and <span class="highlight">test_score.csv</span>, respectively.<br>
+      The <strong>organizers</strong> will use these files to compare the performance of participants' models.</p>
+    
+      <p>Participants must submit code that can <strong>reproduce the model’s performance</strong>. This process is intended to verify the reproducibility of the submitted code and will not be used for any other purpose. The copyright of the code fully belongs to the author.<br>
+      The trained model file should be included in a compressed <strong>zip file</strong>, which must contain all necessary components to generate <span class="highlight">eval_score.csv</span> and <span class="highlight">test_score.csv</span>.</p>
+        <br>
+      <p>The <strong>technical report</strong> should describe:</p>
+    
+      <ul>
+        <li>The proposed anomaly detection model architecture</li>
+        <li>The model training process</li>
+        <li>The anomaly detection methodology</li>
+      </ul>
+    
+      <p>The technical report must be formatted according to the <a href="https://icsv31.org/index.php?va=viewpage&vaid=247">ICSV paper guideline</a>. All reports submitted to the challenge will be included in the conference proceeding as <strong>non-referred papers</strong>.
+      Participants do not need to submit the report through the ICSV website separately.</p>
+    </section>
+    
+    <section>
+      <h2>6. Ranking</h2>
+    
+      <p>The final performance score \(\mathit{S}\) is calculated using the <strong>AUC</strong> scores of three drones (<strong>A, B, and C</strong>). First, the average AUC scores for the evaluation and test datasets are computed as follows:</p>
+    
+      <div style="text-align: center; font-family: 'Cambria Math', 'STIX Two Math', 'Latin Modern Math', serif !important;">$$
+        S_{eval} = \frac{1}{3} \sum_{i \in \{A, B, C\}} AUC_{eval, i}
+        $$</div>
+        
+        <div style="text-align: center; font-family: 'Cambria Math', 'STIX Two Math', 'Latin Modern Math', serif !important;">$$
+        S_{test} = \frac{1}{3} \sum_{i \in \{A, B, C\}} AUC_{test, i}
+        $$</div>
+    
+      <p>The final performance score \(\mathit{S}\) is then calculated as a weighted sum of the evaluation and test scores, with <strong>30% weight for the evaluation dataset</strong> and <strong>70% weight for the test dataset</strong>:</p>
+    
+      <div style="text-align: center; font-family: 'Cambria Math', 'STIX Two Math', 'Latin Modern Math', serif !important;">$$
+        S = 0.3 \times S_{eval} + 0.7 \times S_{test}
+        $$</div>
+    
+      <p>The final ranking will be determined based on this weighted score.</p>
+    </section>
+    
+    <section>
+    <h2>Github repository</h2>
+      <div class="content-item">
+          <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Repository" width="100">
+          <div class="content-text">
+              <a href="https://github.com/ICSV31AIchallenge/ICSV31-AI-Challenge" target="_blank">ICSV31 AI Challenge GitHub Repository</a>
+              <div class="content-details">This repository contains 2025 ICSV31 AI Challenge descriptions and baseline code.</div>
+          </div>
+      </div>
+    </section>
+
+    
+    <section>
+      <h2>Organizers</h2>
+    
+      <p>This challenge is hosted by the <a href="https://www.ksnve.or.kr/english/"> KSNVE </a> (Korean Society for Noise and Vibration Engineering). For inquiries, please send an email to <a href="mailto:icsv31aichallenge@gmail.com">Organizing Committee (icsv31aichallenge@gmail.com)</a>.</p>
+    
+      <p><strong>Challenge organizers</strong></p>
+    
+      <ul>
+        <li>📧 <a href="mailto:jwoo@kaist.ac.kr"><strong>Jung-Woo Choi</strong></a> (KAIST, School of Electrical Engineering)</li>
+        <li>📧 <a href="mailto:wlgns2533@kaist.ac.kr"><strong>Jihoon Choi</strong></a> (KAIST, School of Electrical Engineering)</li>
+        <li>📧 <a href="mailto:seojin@kaist.ac.kr"><strong>Seojin Park</strong></a> (KAIST, School of Electrical Engineering)</li>
+        <li>📧 <a href="mailto:yewon@kaist.ac.kr"><strong>Yewon Kim</strong></a> (KAIST, School of Electrical Engineering)</li>
+      </ul>
+    
+      <p>We look forward to your participation and are happy to assist with any questions!</p>
+    </section>
+    
+    <section>
+        <h2>License</h2>
+            <p>Shield:<img src="https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg" alt="CC BY-SA 4.0" style="display: block; margin-left: 0;"></p>
+            <p>This work is licensed under a
+            <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
+            <p><img src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" alt="CC BY-SA 4.0" style="display: block; margin-left: 0;"></p>
+    </section>
+        
+    <footer>
+        &copy; 2025 ICSV31 AI Challenge | Organized by <a href="https://www.ksnve.or.kr/english/">KSNVE</a>
+    </footer>
+</body>
+</html>
+

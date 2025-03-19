@@ -1,0 +1,8 @@
+.vscode/
+data/
+results/
+model/
+__pycache__/
+
+test_for_organizer.py
+test_labels.csv
