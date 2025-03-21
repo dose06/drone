@@ -46,8 +46,10 @@ def eval(args: argparse.Namespace) -> None:
     y_true, y_pred = [], []
 
     for idx, data in enumerate(dataloader):
-        # 데이터의 shape가 [batch, 1, seq_len, n_mels]라면 squeeze로 채널 차원을 제거합니다.
-        log_mel = data[0].squeeze(1).cuda()  # 결과: [batch, seq_len, n_mels]
+        # 예시: data[0]의 shape가 [batch, 1, 128, 63]인 경우
+        log_mel = data[0].squeeze(1)  # 결과: [batch, 128, 63]
+        # 그리고, time(63)이 시퀀스 길이, 128이 feature dimension이 되어야 하므로, transpose 수행
+        log_mel = log_mel.transpose(1, 2).cuda()  # 결과: [batch, 63, 128]
         anomaly_label = data[1]
         drone_label = data[2]
 
