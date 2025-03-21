@@ -10,6 +10,7 @@ import net
 import utils
 
 import yaml
+from model.baseline.transformerchatgpt import TransformerModel
 
 # ✅ config.yaml 확인
 with open("param.yaml", "r", encoding="utf-8") as f:
@@ -71,12 +72,18 @@ def set_seed(seed: int) -> None:
     torch.cuda.manual_seed_all(seed)
 
 
+
+
+
+
 def train(args: argparse.Namespace) -> None:
     print("Training started...")
     os.makedirs(args.result_dir, exist_ok=True)
     os.makedirs(args.model_dir, exist_ok=True)
 
-    model = net.WaveNetModel().cuda()
+    # 예시: 로그 멜 스펙트로그램의 feature 차원이 128이라고 가정
+    input_dim = args.n_mels  # 또는 데이터에 맞는 차원
+    model = TransformerModel(input_dim=input_dim, d_model=256, nhead=8, num_layers=4).cuda()
 
     dataloader = dataset.get_train_loader(args)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
@@ -88,11 +95,16 @@ def train(args: argparse.Namespace) -> None:
 
         p_bar = tqdm(dataloader, total=len(dataloader), desc="Training", ncols=100)
         for data in p_bar:
-            log_mel = data[0].cuda()
-
+          # 예시: data[0]의 shape가 [batch, 1, 128, 63]인 경우
+            log_mel = data[0].squeeze(1)  # 결과: [batch, 128, 63]
+            # 그리고, time(63)이 시퀀스 길이, 128이 feature dimension이 되어야 하므로, transpose 수행
+            log_mel = log_mel.transpose(1, 2).cuda()  # 결과: [batch, 63, 128]
+            # 만약 배치 차원이 없는 단일 샘플이라면, 다시 unsqueeze해서 [1, 63, 128]로 만듭니다.
+           
             recon_log_mel = model(log_mel)
 
-            loss = criterion(recon_log_mel, log_mel[..., model.get_receptive_field() :])
+            # 모델의 receptive field 대신 전체 시퀀스에 대해 재구성 오차를 계산합니다.
+            loss = criterion(recon_log_mel, log_mel)
 
             optimizer.zero_grad()
             loss.backward()

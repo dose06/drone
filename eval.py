@@ -8,12 +8,31 @@ import dataset
 import net
 import train
 import utils
+from train import get_args  
+from model.baseline.transformerchatgpt import TransformerModel
+
+
+def get_unique_filename(base_path, base_name, extension):
+    """
+    base_path: 파일이 저장될 디렉터리
+    base_name: 파일 기본 이름 (예: "eval_score")
+    extension: 파일 확장자 (예: ".csv")
+    """
+    idx = 0
+    filename = os.path.join(base_path, f"{base_name}{extension}")
+    while os.path.exists(filename):
+        idx += 1
+        filename = os.path.join(base_path, f"{base_name}_{idx}{extension}")
+    return filename
 
 
 def eval(args: argparse.Namespace) -> None:
     print("Evaluation started...")
 
-    model = net.WaveNetModel().cuda()
+    # Transformer 모델 생성 (여기서는 n_mels를 input_dim으로 사용)
+    input_dim = args.n_mels  # 예: 128
+    model = TransformerModel(input_dim=input_dim, d_model=256, nhead=8, num_layers=4).cuda()
+
     model_path = os.path.join(args.model_dir, args.model_path)
     model.load_state_dict(torch.load(model_path, weights_only=True))
     model.eval()
@@ -27,32 +46,35 @@ def eval(args: argparse.Namespace) -> None:
     y_true, y_pred = [], []
 
     for idx, data in enumerate(dataloader):
-        log_mel = data[0].cuda()
+          # 예시: data[0]의 shape가 [batch, 1, 128, 63]인 경우
+        log_mel = data[0].squeeze(1)  # 결과: [batch, 128, 63]
+        # 그리고, time(63)이 시퀀스 길이, 128이 feature dimension이 되어야 하므로, transpose 수행
+        log_mel = log_mel.transpose(1, 2).cuda()  # 결과: [batch, 63, 128]
         anomaly_label = data[1]
         drone_label = data[2]
 
         recon_log_mel = model(log_mel)
-
-        loss = criterion(recon_log_mel, log_mel[..., model.get_receptive_field() :])
+        loss = criterion(recon_log_mel, log_mel)
 
         drone_label_list.append(drone_label.item())
-
         y_true.append(1 if anomaly_label.item() > 0 else 0)
         y_pred.append(loss.item())
 
         file_name = os.path.splitext(file_list[idx].split("/")[-1])[0]
-
         score_list.append([file_name, loss.item()])
 
     auc = metrics.roc_auc_score(y_true, y_pred)
     print("AUC: ", auc)
-    utils.save_csv(score_list, os.path.join(args.result_dir, "eval_score.csv"))
+
+    # 고유한 파일 이름 생성 후 결과 CSV 저장
+    result_path = get_unique_filename(args.result_dir, "eval_score", ".csv")
+    utils.save_csv(score_list, result_path)
+    print(f"평가 결과가 {result_path}에 저장되었습니다.")
 
     drone_type_list = ["A", "B", "C"]
     for drone_type in drone_type_list:
         indices = [
-            i
-            for i, label in enumerate(drone_label_list)
+            i for i, label in enumerate(drone_label_list)
             if label == drone_type_list.index(drone_type)
         ]
         pred_labels = [y_pred[i] for i in indices]
@@ -63,6 +85,6 @@ def eval(args: argparse.Namespace) -> None:
 
 if __name__ == "__main__":
     args = train.get_args()
+    os.makedirs(args.result_dir, exist_ok=True)
     os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu)
-
     eval(args)
