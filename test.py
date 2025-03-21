@@ -44,8 +44,10 @@ def test(args: argparse.Namespace) -> None:
     score_list = [["File", "Score"]]
 
     for idx, data in enumerate(dataloader):
-        # 만약 log_mel의 shape가 [batch, 1, seq_len, n_mels]라면, squeeze로 차원 제거
-        log_mel = data[0].squeeze(1).cuda()  # 결과: [batch, seq_len, n_mels]
+        # 예시: data[0]의 shape가 [batch, 1, 128, 63]인 경우
+        log_mel = data[0].squeeze(1)  # 결과: [batch, 128, 63]
+        # 그리고, time(63)이 시퀀스 길이, 128이 feature dimension이 되어야 하므로, transpose 수행
+        log_mel = log_mel.transpose(1, 2).cuda()  # 결과: [batch, 63, 128]
         recon_log_mel = model(log_mel)
         loss = criterion(recon_log_mel, log_mel)
         file_name = os.path.splitext(file_list[idx].split("/")[-1])[0]
