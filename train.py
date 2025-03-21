@@ -95,9 +95,10 @@ def train(args: argparse.Namespace) -> None:
 
         p_bar = tqdm(dataloader, total=len(dataloader), desc="Training", ncols=100)
         for data in p_bar:
-            # 여기서 log_mel 데이터의 shape을 확인하여 Transformer 모델에 맞게 재배열 필요
-            # 예시로 [batch, seq_len, n_mels] 형태라고 가정합니다.
-            log_mel = data[0].squeeze(1).cuda()
+            # 예시: data[0]의 shape가 [batch, 1, 128, 63]인 경우
+            log_mel = data[0].squeeze(1)  # 결과: [batch, 128, 63]
+            # 그리고, time(63)이 시퀀스 길이, 128이 feature dimension이 되어야 하므로, transpose 수행
+            log_mel = log_mel.transpose(1, 2).cuda()  # 결과: [batch, 63, 128]
 
             recon_log_mel = model(log_mel)
 
